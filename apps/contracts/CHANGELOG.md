@@ -1,5 +1,11 @@
 # contracts
 
+## 0.2.2
+
+### Patch Changes
+
+- Added Dummy ERC20 token and tests for ERC20 token.
+
 ## 0.2.1
 
 ### Patch Changes
