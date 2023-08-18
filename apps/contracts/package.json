@@ -34,5 +34,8 @@
     "tsconfig": "workspace:^",
     "typechain": "^8.2.0",
     "typescript": "^5.1.3"
+  },
+  "dependencies": {
+    "@tenderly/hardhat-tenderly": "^1.7.7"
   }
 }
