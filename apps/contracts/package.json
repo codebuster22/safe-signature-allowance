@@ -4,7 +4,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "version": "0.1.0",
+  "version": "0.2.0",
   "devDependencies": {
     "@chain-labs/utils": "^0.1.1",
     "@ethersproject/abi": "^5.7.0",
