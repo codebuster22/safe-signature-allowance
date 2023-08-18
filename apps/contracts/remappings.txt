@@ -3,3 +3,4 @@ erc4626-tests/=lib/openzeppelin-contracts/lib/erc4626-tests/
 forge-std/=lib/forge-std/src/
 @openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/
 @openzeppelin/contracts=lib/openzeppelin-contracts/contracts/
+@safe-global/safe-contracts=lib/safe-contracts.git/
