@@ -1,0 +1,9 @@
+# package: contracts
+artifacts
+cache
+coverage
+node_modules
+typechain-types
+coverage.json
+/config/config.ts
+/lib

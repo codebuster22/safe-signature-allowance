@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 import { HardhatUserConfig } from 'hardhat/config';
 import { NetworkUserConfig } from "hardhat/types";
 import {checkForUndefined} from "@chain-labs/utils";
+// import tenderly before other imports to prevent collision with hardhat-deploy-ethers
+import "@tenderly/hardhat-tenderly";
 import "@nomicfoundation/hardhat-foundry";
 import "@nomicfoundation/hardhat-toolbox";
 import "hardhat-deploy"
