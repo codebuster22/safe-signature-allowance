@@ -1,81 +1,72 @@
-# Turborepo starter
+# Safe Signature Allowance Module
 
-This is an official starter Turborepo.
+## About
 
-## Using this example
+This is the repository for a Safe Module that can allow non-signers to withdraw specific amount of tokens from a defined Safe upon receiving a valid and active (not expired) signature(s) of threshold signers.
 
-Run the following command:
+## User Personas and Entities
+All entities interacting in the project can be categorised as following
+1. `SafeSigner`: An EOA or smart contract account that is one of the Signer of a Safe.
+2. `Withdrawer`: An EOA or smart contract account that is going to withdraw defined number of tokens from the `SignatureAllowance` module upon receiving valid and active signature.
+3. `Safe`: A plain old safe multi-sig contract.
+4. `SignatureAllowance` (Safe Module): A Safe Module that manages and executes the withdrawal of GM tokens from `Safe` upon valid requirements checks.
+5. `GM` (ERC20): An ERC20 token that will be transferred from `Safe` to `Withdrawer` by `SignatureAllowance`.
 
-```sh
-npx create-turbo@latest
-```
+## Functional Requirements
+1. `GM` token should be a simple ERC20 token.
+2. Once `GM` token is deployed, transfer 100M tokens to `Safe`.
+3. `Safe` should have `SignatureAllowance` added as valid module.
+4. `SignatureAllowance` should be owned by `Safe`.
+5. `SignatureAllowance` should interact with `Safe` using `ModuleManager` interface.
+6. `SignatureAllowance` should be able to handle withdrawal of multiple ERC20 tokens.
+6. `SignatureAllowance` should only be able to withdraw tokens from one `Safe` only.
+7. `SignatureAllowance` should implement a withdraw function that accepts following parameters.
+    a. amount of tokens: Amount of tokens to be withdrawen.
+    b. receiver address: Address of Withdrawer
+    c. signature(s): A concatenated signature string of x signatures where x is the number of signers greater than Threshold signers.
+    d. token address: address of token to be withdrawn
+This function should generate a withdrawal hash (`keccak(AmountOfTokens, receiverAddress, salt, tokenAddress)`).
+8. `SignatureAllowance` should use a salt for each withdrawal request to prevent replay attacks.
+9. `SignatureAllowance` should use `blocknumber` instead of `time` to prevent miners from making the signature inactive. Estimate number of blocknumbers for the given valid time period.
+10. `SignatureAllowance` should implement a function to change Safe address.
+11. `SignatureAllowance` should implement a function to add and remove tokens that can be withdrawn.
+12. `SignatureAllowance` should be deployed as UUPS proxy.
+13. `SignatureAllowance` should support EIP1271 signatures to allow smart contract signatures.
 
-## What's inside?
+## Acceptance Criteria
+- [] A withdrawer should be able to withdraw X amount of Token A given the signature is valid and active.
+- [] A withdrawer should not be able to withdraw if the signature is:
+    - [] Invalid
+    - [] Valid but inactive
+    - If Signature is invalid, no way of checking if the signature is active or not.
+- [] A SafeSigner can add new tokens to `SignatureAllowance` via Safe.
+- [] A SafeSigner cannot directly add new tokens to `SignatureAllowance`.
+- [] A SafeSigner can remove tokens from `SignatureAllowance` via Safe.
+- [] A SafeSigner cannot directly remove tokens from `SignatureAllowance`.
+- [] A SafeSigner cannot change owner of the `SignatureAllowance` directly.
+- [] SignatureAllowance can handle EIP1271 signature as well.
+- [] SignatureAllowance can handle 1 and more than 1 threshold signatures.
 
-This Turborepo includes the following packages/apps:
+## Project Stucture
+To be added after project completion.
 
-### Apps and Packages
+## Tech Stack
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `ui`: a stub React component library shared by both `web` and `docs` applications
-- `eslint-config-custom`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `tsconfig`: `tsconfig.json`s used throughout the monorepo
+### Smart Contracts
+Dev Tool: Hardhat combined with Foundry
+Smart Contract Language: Solidity
+Development Language: TypeScript
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+### Indexer
+Indexing Tool: The Graph
+Development Langauge: TypeScript
 
-### Utilities
+### Frontend
+Framework: React (Create Vite App)
+Development Language: TypeScript & TSX
 
-This Turborepo has some additional tools already setup for you:
+### Dev Tooling
+`cast`: Interact with smart contract from command line.
+`anvil`: Local testing
+`Tenderly`: Tracing contract interaction on test networks.
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm build
-```
-
-### Develop
-
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm dev
-```
-
-### Remote Caching
-
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-npx turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
