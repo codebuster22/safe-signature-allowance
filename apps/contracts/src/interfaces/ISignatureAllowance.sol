@@ -2,8 +2,11 @@
 
 pragma solidity 0.8.19;
 
-import {Safe} from "@safe-global/safe-contracts/contracts/Safe.sol";
+import {Safe, Enum} from "@safe-global/safe-contracts/contracts/Safe.sol";
 
+/// @title Signature Allowance interface
+/// @author Mihirsinh Parmar <mihirsinh.parmar.it@gmail.com>
+/// @notice outlines all the functions to be implemented by Signature Allowance contract
 interface ISignatureAllowance {
     /// @notice Withdraws allowance for default token
     /// @dev uses withdrawAllowanceFromToken underneath, by passing token address as default token address
@@ -93,4 +96,22 @@ interface ISignatureAllowance {
     /// @dev for signature to be active expiryPeriod + creationTime <= block.timestamp
     /// @param _newExpiryPeriod expiry period (in seconds) after which a signature is inactive. SignatureCreationTime - now() < expiryPeriod
     function setSignatureExpiryPeriod(uint256 _newExpiryPeriod) external;
+
+    /// @notice custom encoding of transaction data
+    /// @dev a custom adaptation from Safe contracts
+    /// @param to target contract to be interacted with by Safe
+    /// @param value amount of ETH to be sent
+    /// @param data encoded data to interact with `to`
+    /// @param operation type of interaction operation
+    /// @param creationTime timestamp when the signature was created
+    /// @param _salt a unique salt used to generate signature
+    /// @return hashData encoded hashed data to be used in generating signature process
+    function encodeTransactionData(
+        address to,
+        uint256 value,
+        bytes memory data,
+        Enum.Operation operation,
+        uint256 creationTime,
+        uint256 _salt
+    ) view external returns(bytes memory hashData);
 }
