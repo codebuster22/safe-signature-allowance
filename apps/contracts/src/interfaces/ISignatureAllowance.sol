@@ -2,6 +2,8 @@
 
 pragma solidity 0.8.19;
 
+import {Safe} from "@safe-global/safe-contracts/contracts/Safe.sol";
+
 interface ISignatureAllowance {
     /// @notice Withdraws allowance for default token
     /// @dev uses withdrawAllowanceFromToken underneath, by passing token address as default token address
@@ -11,7 +13,9 @@ interface ISignatureAllowance {
     function withdrawAllowanceDefaultToken(
         uint256 _amount,
         address _withdrawer,
-        bytes calldata _signatures
+        bytes calldata _signatures,
+        uint256 _creationTime,
+        uint256 _salt
     ) external;
 
     /// @notice Withdraws allownace for specified token
@@ -24,7 +28,9 @@ interface ISignatureAllowance {
         uint256 _amount,
         address _withdrawer,
         bytes calldata _signatures,
-        address _token
+        address _token,
+        uint256 _creationTime,
+        uint256 _salt
     ) external;
 
     /// @notice Adds new token to allowlist
@@ -40,12 +46,17 @@ interface ISignatureAllowance {
     /// @notice Set new Safe address to withdraw tokens from
     /// @dev Ensure to enable this module in Safe, else all withdrawals will fail
     /// @param _newSafe address of new Safe
-    function setNewSafe(address _newSafe) external;
+    function setNewSafe(Safe _newSafe) external;
+
+    /// @notice Set new Default Token address and add to allowlist if not allowed
+    /// @dev If a default token is not allowlisted then add the new default token to allowlist
+    /// @param _newDefaultToken new default token address
+    function setNewDefaultToken(address _newDefaultToken) external;
 
     /// @notice get Safe address
     /// @dev Tokens are withdrawn from this safe
     /// @return _safe safe address
-    function getSafe() view external returns(address _safe);
+    function getSafe() view external returns(Safe _safe);
 
     /// @notice get default token to be withdrawn
     /// @dev default token is withdrawn when use calls withdrawAllowanceDefaultToken
@@ -68,11 +79,18 @@ interface ISignatureAllowance {
         uint256 _amount,
         address _withdrawer,
         bytes calldata _signatures,
-        address _token
+        address _token,
+        uint256 _creationTime,
+        uint256 _salt
     ) view external returns(bool _isValid);
 
-    /// @notice check if a signature is valid and active
-    /// @dev uses Safe.checkSignatures function by generating datahash and ensuring the signature is still active
+    /// @notice get expiry time period after which a signature becomes inactive
+    /// @dev for signature to be active expiryPeriod + creationTime <= block.timestamp
     /// @return _expiryPeriod expiry period (in seconds) after which a signature is inactive. SignatureCreationTime - now() < expiryPeriod
     function getSignatureExpiryPeriod() view external returns(uint256 _expiryPeriod);
+
+    /// @notice set new expiry period (in seconds)
+    /// @dev for signature to be active expiryPeriod + creationTime <= block.timestamp
+    /// @param _newExpiryPeriod expiry period (in seconds) after which a signature is inactive. SignatureCreationTime - now() < expiryPeriod
+    function setSignatureExpiryPeriod(uint256 _newExpiryPeriod) external;
 }
