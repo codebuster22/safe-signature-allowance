@@ -11,6 +11,8 @@ abstract contract SignatureAllowanceStorage {
 
     address public defaultToken;
 
+    uint256 public expiryPeriod;
+
     /// @notice used to prevent storage slot collision
     /// @dev Gap of 50 storage slots to allow adding new state variables in next upgrades
     uint256[50] private __gap;
