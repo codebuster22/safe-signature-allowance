@@ -47,10 +47,9 @@ abstract contract SafeModule is Initializable {
         address to,
         uint256 value,
         bytes memory data,
-        Enum.Operation operation,
-        Safe safe
+        Enum.Operation operation
     ) internal {
-        bool isSuccess = safe.execTransactionFromModule(
+        bool isSuccess = _safe.execTransactionFromModule(
             to,
             value,
             data,
