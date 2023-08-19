@@ -7,12 +7,18 @@ import "../src/GM.sol";
 import {SetupSafe, Safe} from "./utils/SetupSafe.s.sol";
 
 contract GMTest is Test {
-    uint256 constant public HUNDRED_MILLION = 100_000_000;
+    uint256 constant public HUNDRED_MILLION = 100_000_000 ether;
     GM public gm;
     Safe public safe;
 
+    // Wallet signerAccount;
+    address public signerAccount;
+    uint256 public signerPrivateKey;
+
     function setUp() public {
-        safe = (new SetupSafe()).setUp();
+        // create wallet
+        (signerAccount, signerPrivateKey) = makeAddrAndKey("SignerAccount");
+        safe = (new SetupSafe()).setUp(signerAccount);
         // create GM token and mint hundred million tokens to Safe
         gm = new GM(address(safe));
     }
