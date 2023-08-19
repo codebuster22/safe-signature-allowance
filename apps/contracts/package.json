@@ -8,7 +8,7 @@
     "coverage": "hardhat coverage",
     "test": "hardhat test"
   },
-  "version": "0.2.2",
+  "version": "0.2.3",
   "devDependencies": {
     "@chain-labs/utils": "^0.1.1",
     "@ethersproject/abi": "^5.7.0",

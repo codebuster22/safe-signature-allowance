@@ -1,5 +1,14 @@
 # contracts
 
+## 0.2.3
+
+### Patch Changes
+
+- - Add bare minimum SingatureAllowance Contract.
+  - Create a SafeModule to be inherited to new Safe Modules.
+  - Added tests for SafeModule and SignatureAllowance (not 100% yet).
+  - Updated Solidity version to 0.8.19
+
 ## 0.2.2
 
 ### Patch Changes
