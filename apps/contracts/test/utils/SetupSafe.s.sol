@@ -8,10 +8,7 @@ import {TokenCallbackHandler} from "@safe-global/safe-contracts/contracts/handle
 contract SetupSafe {
     address[] public owners;
 
-    // cannot use address(0x1) because SENTINEL_OWNERS address is address(0x1)
-    address public safeSigner1 = address(0x9);
-
-    function setUp() public returns (Safe safe) {
+    function setUp(address signerAddress) public returns (Safe safe) {
         // initialise SafeProxy
         Safe _safe = new Safe();
         SafeProxyFactory _safeProxyFactory = new SafeProxyFactory();
@@ -23,7 +20,7 @@ contract SetupSafe {
         uint256 saltNonce = 1;
 
         // initialise variables
-        owners.push(safeSigner1);
+        owners.push(signerAddress);
         uint256 _threshold = 1;
         address to;
         bytes memory data;
