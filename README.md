@@ -1,5 +1,78 @@
 # Safe Signature Allowance Module
 
+## Prerequisites:
+1. [foundry](https://book.getfoundry.sh/getting-started/installation)
+2. [yarn](https://yarnpkg.com/getting-started/install)
+
+## Setup
+
+1. Install Dependencies
+```
+yarn install
+```
+
+2. Navigate to `contracts` workspace
+```
+cd apps/contracts
+```
+
+3. Create an `.env` file.
+```
+touch .env
+```
+
+4. Add enviornment variables, you can look into `.env.example` for the enviornment variables needed.
+```
+INFURA_KEY=
+ETHERSCAN_KEY=
+POLYGONSCAN_KEY=
+PRIVATE_KEY=
+TEST_OWNER_PRIVATE_KEY=
+MNEMONIC=
+
+# Always true when running locally or in test
+NOT_CI=true
+```
+
+5. compile contracts with hardhat
+```
+yarn hardhat compile
+```
+
+6. compile contracts with foundry
+```
+forge compile
+```
+
+7. Run tests using foundry
+Used Foundry for testing. I wanted to added tests with Hardhat as well but couldn't do it due to time restrictions.
+```
+forge test -vv
+```
+
+8. Check test coverage
+Used Foundry for testing.
+```
+forge coverage
+```
+
+## Deploy contracts
+### Setup constants at `./apps/contracts/config/constants.ts`
+
+### Create a new Safe on Goerli testnet.
+
+### Copy the Safe address without the chain pre-fix.
+
+### Replace the address that already exist in `./apps/contracts/config/constants.ts` with the address you got for your new Safe.
+
+### Ensure your address is the one of the owner of the Safe and threshold is only
+
+### Deploy contracts
+
+```
+yarn hardhat deploy --network $NETWORK_NAME --tags SignatureAllowance
+```
+
 ## About
 
 This is the repository for a Safe Module that can allow non-signers to withdraw specific amount of tokens from a defined Safe upon receiving a valid and active (not expired) signature(s) of threshold signers.
