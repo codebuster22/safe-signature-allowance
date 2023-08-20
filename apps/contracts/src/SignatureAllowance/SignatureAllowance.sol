@@ -69,17 +69,17 @@ contract SignatureAllowance is
     /// @param _defaultToken token to be added to allowlist and set as default token
     /// @param _expiryPeriod expiry period
     function initialize(
-        Safe _safe,
+        Safe _newSafe,
         address _defaultToken,
         uint256 _expiryPeriod
     ) external initializer {
         // initialize safe module
-        __SafeModule_init(_safe);
+        __SafeModule_init(_newSafe);
 
         // initialize ownable
         __Ownable_init();
         // transfer ownership to safe
-        _transferOwnership(address(_safe));
+        _transferOwnership(address(_newSafe));
 
         // initialize pausable
         __Pausable_init();
