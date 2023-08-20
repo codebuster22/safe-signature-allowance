@@ -13,39 +13,37 @@ contract SignatureAllowanceExpiryTimeTest is SignatureAllowanceSetup {
         assertEq(currentExpiryPeriod, expiryPeriod);
     }
 
-    function testUserSettingNewExpiryPeriod() public {
+    function testUserSettingNewExpiryPeriod(uint256 _expiryTime) public {
         // taking an easier approach in testing by impersonating Safe
         startHoax(address(safe));
         // initialise new expiry period
-        uint256 newExpiryPeriod = 2 hours;
 
         // set new expiry period
-        signatureAllowance.setSignatureExpiryPeriod(newExpiryPeriod);
+        signatureAllowance.setSignatureExpiryPeriod(_expiryTime);
 
         // get current expiry period
         uint256 currentExpiryPeriod = signatureAllowance
             .getSignatureExpiryPeriod();
 
         // check if new expiry period is updated
-        assertEq(currentExpiryPeriod, newExpiryPeriod);
+        assertEq(currentExpiryPeriod, _expiryTime);
     }
 
-    function testNonSignerSettingNewExpiryPeriod() public {
+    function testNonSignerSettingNewExpiryPeriod(uint256 _expiryPeriod) public {
+        vm.assume(_expiryPeriod != expiryPeriod);
         startHoax(nonSignerAccount);
-        // initialise new expiry period
-        uint256 newExpiryPeriod = 2 hours;
 
         // set new expiry period
         // expect revert as caller is not owner
         vm.expectRevert("Ownable: caller is not the owner");
-        signatureAllowance.setSignatureExpiryPeriod(newExpiryPeriod);
+        signatureAllowance.setSignatureExpiryPeriod(_expiryPeriod);
 
         // get current expiry period
         uint256 currentExpiryPeriod = signatureAllowance
             .getSignatureExpiryPeriod();
 
         // check if new expiry period is updated
-        assertNotEq(currentExpiryPeriod, newExpiryPeriod);
+        assertNotEq(currentExpiryPeriod, _expiryPeriod);
         // ensure the expiry period is still the same
         assertEq(currentExpiryPeriod, expiryPeriod);
     }
