@@ -29,7 +29,7 @@ contract SignatureAllowance is
     /// but the token is already allowlisted
     error TokenAlreadyInAllowlist();
 
-    /// When a signer tries to remove a token from allowlist
+    /// When a signer tries to remove or withdraw a token from allowlist
     /// but the token is not allowlisted
     error TokenNotInAllowlist();
 
@@ -69,17 +69,17 @@ contract SignatureAllowance is
     /// @param _defaultToken token to be added to allowlist and set as default token
     /// @param _expiryPeriod expiry period
     function initialize(
-        Safe _safe,
+        Safe _newSafe,
         address _defaultToken,
         uint256 _expiryPeriod
     ) external initializer {
         // initialize safe module
-        __SafeModule_init(_safe);
+        __SafeModule_init(_newSafe);
 
         // initialize ownable
         __Ownable_init();
         // transfer ownership to safe
-        _transferOwnership(address(_safe));
+        _transferOwnership(address(_newSafe));
 
         // initialize pausable
         __Pausable_init();
@@ -129,6 +129,10 @@ contract SignatureAllowance is
         // prevent replay attack
         if (saltUsed[_salt]) {
             revert SaltAlreadyUsed(_salt);
+        }
+        // check if token is allowlisted
+        if(!tokensAllowed[_token]){
+            revert TokenNotInAllowlist();
         }
         // check if the signature(s) is valid and active
         isSignatureValid(

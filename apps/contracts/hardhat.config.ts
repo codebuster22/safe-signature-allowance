@@ -65,7 +65,7 @@ if (PRIVATE_KEY) {
 const config: HardhatUserConfig = {
 	defaultNetwork: "hardhat",
 	paths: {
-		artifacts: "build/artifacts",
+		artifacts: "artifacts",
 		cache: "build/cache",
 		deploy: "deploy",
 		sources: "src",
