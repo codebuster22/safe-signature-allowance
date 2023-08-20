@@ -1,0 +1,180 @@
+{
+  "manifestVersion": "3.2",
+  "proxies": [
+    {
+      "address": "0x5b1319eE4bD1283E4c5d4d984d3f005f20B9810F",
+      "txHash": "0x34ab5f0982b0f064aeec32e7142fac3ed8d544cbeab21e48a3b7e913f433bb10",
+      "kind": "uups"
+    }
+  ],
+  "impls": {
+    "2c305fda45f81bb5ed6f2b2040ca897a1c0ce34aaab37ebd6677047bc10dfbde": {
+      "address": "0xeE3557b73c527debCCD45cf8e4EdfeDE1d15D1D9",
+      "txHash": "0x5a9c2f9b2f51cdd75ddc5c995d6de941f90ebd5f5a6123e7466739ef06773825",
+      "layout": {
+        "solcVersion": "0.8.19",
+        "storage": [
+          {
+            "label": "_initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint8",
+            "contract": "Initializable",
+            "src": "lib/openzeppelin-contracts-upgradeable/contracts/proxy/utils/Initializable.sol:63",
+            "retypedFrom": "bool"
+          },
+          {
+            "label": "_initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "lib/openzeppelin-contracts-upgradeable/contracts/proxy/utils/Initializable.sol:68"
+          },
+          {
+            "label": "_safe",
+            "offset": 2,
+            "slot": "0",
+            "type": "t_contract(Safe)3752",
+            "contract": "SafeModule",
+            "src": "src/SafeModule/SafeModule.sol:56"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ContextUpgradeable",
+            "src": "lib/openzeppelin-contracts-upgradeable/contracts/utils/ContextUpgradeable.sol:36"
+          },
+          {
+            "label": "_owner",
+            "offset": 0,
+            "slot": "51",
+            "type": "t_address",
+            "contract": "OwnableUpgradeable",
+            "src": "lib/openzeppelin-contracts-upgradeable/contracts/access/OwnableUpgradeable.sol:22"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "52",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "OwnableUpgradeable",
+            "src": "lib/openzeppelin-contracts-upgradeable/contracts/access/OwnableUpgradeable.sol:94"
+          },
+          {
+            "label": "_paused",
+            "offset": 0,
+            "slot": "101",
+            "type": "t_bool",
+            "contract": "PausableUpgradeable",
+            "src": "lib/openzeppelin-contracts-upgradeable/contracts/security/PausableUpgradeable.sol:29"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "102",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "PausableUpgradeable",
+            "src": "lib/openzeppelin-contracts-upgradeable/contracts/security/PausableUpgradeable.sol:116"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "151",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ERC1967UpgradeUpgradeable",
+            "src": "lib/openzeppelin-contracts-upgradeable/contracts/proxy/ERC1967/ERC1967UpgradeUpgradeable.sol:169"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "201",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "UUPSUpgradeable",
+            "src": "lib/openzeppelin-contracts-upgradeable/contracts/proxy/utils/UUPSUpgradeable.sol:111"
+          },
+          {
+            "label": "defaultToken",
+            "offset": 0,
+            "slot": "251",
+            "type": "t_address",
+            "contract": "SignatureAllowanceStorage",
+            "src": "src/SignatureAllowance/SignatureAllowanceStorage.sol:12"
+          },
+          {
+            "label": "expiryPeriod",
+            "offset": 0,
+            "slot": "252",
+            "type": "t_uint256",
+            "contract": "SignatureAllowanceStorage",
+            "src": "src/SignatureAllowance/SignatureAllowanceStorage.sol:17"
+          },
+          {
+            "label": "saltUsed",
+            "offset": 0,
+            "slot": "253",
+            "type": "t_mapping(t_uint256,t_bool)",
+            "contract": "SignatureAllowanceStorage",
+            "src": "src/SignatureAllowance/SignatureAllowanceStorage.sol:23"
+          },
+          {
+            "label": "tokensAllowed",
+            "offset": 0,
+            "slot": "254",
+            "type": "t_mapping(t_address,t_bool)",
+            "contract": "SignatureAllowanceStorage",
+            "src": "src/SignatureAllowance/SignatureAllowanceStorage.sol:28"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "255",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "SignatureAllowanceStorage",
+            "src": "src/SignatureAllowance/SignatureAllowanceStorage.sol:32"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]",
+            "numberOfBytes": "1568"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]",
+            "numberOfBytes": "1600"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_contract(Safe)3752": {
+            "label": "contract Safe",
+            "numberOfBytes": "20"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_bool)": {
+            "label": "mapping(uint256 => bool)",
+            "numberOfBytes": "32"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint8": {
+            "label": "uint8",
+            "numberOfBytes": "1"
+          }
+        }
+      }
+    }
+  }
+}
