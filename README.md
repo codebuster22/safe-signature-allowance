@@ -1,5 +1,8 @@
 # Safe Signature Allowance Module
 
+## Demo
+[See Demo on Loom](https://www.loom.com/share/af9a7b04c3974268bf50c6b5c5db52c8?sid=f6950575-6140-42fc-bfaa-fea2c299a81b)
+
 ## Prerequisites:
 1. [foundry](https://book.getfoundry.sh/getting-started/installation)
 2. [yarn](https://yarnpkg.com/getting-started/install)
@@ -121,7 +124,74 @@ This function should generate a withdrawal hash (`keccak(AmountOfTokens, receive
 - [] SignatureAllowance can handle 1 and more than 1 threshold signatures.
 
 ## Project Stucture
-To be added after project completion.
+```
+📦 
+├─ .changeset/
+├─ .eslintrc.js
+├─ .github
+│  └─ workflows
+│     └─ test.yml
+├─ .gitignore
+├─ .gitmodules
+├─ .npmrc
+├─ .yarn/
+├─ .yarnrc.yml
+├─ README.md
+├─ apps
+│  └─ contracts
+│     ├─ .env.example
+│     ├─ .eslintignore
+│     ├─ .github/
+│     ├─ .gitignore
+│     ├─ .gitmodules
+│     ├─ .openzeppelin/
+│     ├─ CHANGELOG.md
+│     ├─ README.md
+│     ├─ config
+│     │  └─ constants.ts
+│     ├─ deploy
+│     │  └─ 00_deploy_signature_allowance.ts
+│     ├─ deployments/
+│     ├─ foundry.toml
+│     ├─ hardhat.config.ts
+│     ├─ lib/
+│     ├─ package.json
+│     ├─ remappings.txt
+│     ├─ src
+│     │  ├─ GM.sol
+│     │  ├─ MockToken.sol
+│     │  ├─ SafeModule
+│     │  │  └─ SafeModule.sol
+│     │  ├─ SignatureAllowance
+│     │  │  ├─ SignatureAllowance.sol
+│     │  │  └─ SignatureAllowanceStorage.sol
+│     │  └─ interfaces
+│     │     └─ ISignatureAllowance.sol
+│     ├─ task
+│     │  └─ createNewSignatures.task.ts
+│     ├─ test
+│     │  ├─ GM.t.sol
+│     │  ├─ SignatureAllowance
+│     │  │  ├─ SignatureAllowanceExpiryTimeTest.t.sol
+│     │  │  ├─ SignatureAllowanceFailSafe.t.sol
+│     │  │  ├─ SignatureAllowanceSafeConfigTest.t.sol
+│     │  │  ├─ SignatureAllowanceSetup.t.sol
+│     │  │  ├─ SignatureAllowanceSignatureValidationTest.t.sol
+│     │  │  ├─ SignatureAllowanceTokenAllowlist.t.sol
+│     │  │  ├─ SignatureAllowanceUpgradeableTest.t.sol
+│     │  │  └─ SignatureAllowanceWithdrawTest.t.sol
+│     │  └─ utils
+│     │     └─ SetupSafe.s.sol
+│     ├─ tsconfig.json
+│     └─ typechain-types/
+├─ package.json
+├─ packages
+│  ├─ eslint-config-custom/
+│  ├─ tsconfig/
+│  └─ utils/
+├─ turbo.json
+└─ yarn.lock
+```
 
 ## Tech Stack
 
