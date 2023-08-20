@@ -29,7 +29,7 @@ contract SignatureAllowance is
     /// but the token is already allowlisted
     error TokenAlreadyInAllowlist();
 
-    /// When a signer tries to remove a token from allowlist
+    /// When a signer tries to remove or withdraw a token from allowlist
     /// but the token is not allowlisted
     error TokenNotInAllowlist();
 
@@ -129,6 +129,10 @@ contract SignatureAllowance is
         // prevent replay attack
         if (saltUsed[_salt]) {
             revert SaltAlreadyUsed(_salt);
+        }
+        // check if token is allowlisted
+        if(!tokensAllowed[_token]){
+            revert TokenNotInAllowlist();
         }
         // check if the signature(s) is valid and active
         isSignatureValid(
