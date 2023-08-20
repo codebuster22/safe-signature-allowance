@@ -1,4 +1,4 @@
-import { AddressZero } from '@ethersproject/constants';
+import { AddressZero } from "@ethersproject/constants";
 import { Address, DeployFunction } from "hardhat-deploy/types";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import {
@@ -7,8 +7,8 @@ import {
   expiryPeriod,
 } from "../config/constants";
 import { Safe } from "../typechain-types";
-import { checkForUndefined } from '@chain-labs/utils';
-import { arrayify } from 'ethers/lib/utils';
+import { checkForUndefined } from "@chain-labs/utils";
+import { arrayify } from "ethers/lib/utils";
 
 const contractName = CONTRACT_NAMES.SIGNATURE_ALLOWANCE;
 
@@ -73,28 +73,60 @@ const deploySignatureAllowance: DeployFunction = async (
   console.log(`${contractName} Artifacts Saved`);
 
   // enable module at safe
-  console.log(`Enabling module ${signatureAllowance.address} on ${safeAddress}`);
-  const safeInstance = await ethers.getContractAt(CONTRACT_NAMES.SAFE, safeAddress) as Safe;
+  console.log(
+    `Enabling module ${signatureAllowance.address} on ${safeAddress}`
+  );
+  const safeInstance = (await ethers.getContractAt(
+    CONTRACT_NAMES.SAFE,
+    safeAddress
+  )) as Safe;
 
   // generate data for enable module
-  const targetTrxData = await safeInstance.populateTransaction.enableModule(signatureAllowance.address);
+  const targetTrxData = await safeInstance.populateTransaction.enableModule(
+    signatureAllowance.address
+  );
 
   checkForUndefined("Transaction.data", targetTrxData.data);
   const currentNonce = await safeInstance.nonce();
-  const trxHash = await safeInstance.getTransactionHash(safeInstance.address, 0, targetTrxData.data, 0, 0, 0, 0, AddressZero, AddressZero, currentNonce);
-  const signature = (await deployer.signMessage(arrayify(trxHash))).replace(/1b$/, "1f")
-  .replace(/1c$/, "20");
+  const trxHash = await safeInstance.getTransactionHash(
+    safeInstance.address,
+    0,
+    targetTrxData.data,
+    0,
+    0,
+    0,
+    0,
+    AddressZero,
+    AddressZero,
+    currentNonce
+  );
+  const signature = (await deployer.signMessage(arrayify(trxHash)))
+    .replace(/1b$/, "1f")
+    .replace(/1c$/, "20");
   // make transaction on safe
-  try{
-    const transaction = await safeInstance.execTransaction(safeInstance.address, 0, targetTrxData.data, 0, 0, 0, 0, AddressZero, AddressZero, signature);
+  try {
+    const transaction = await safeInstance.execTransaction(
+      safeInstance.address,
+      0,
+      targetTrxData.data,
+      0,
+      0,
+      0,
+      0,
+      AddressZero,
+      AddressZero,
+      signature
+    );
     const receipt = await transaction.wait();
   } catch (e) {
     console.log("Some error occured. Please add Module manually");
   }
 
   // check if module is enabled
-  const isEnabled = await safeInstance.isModuleEnabled(signatureAllowance.address);
-  if(!isEnabled) {
+  const isEnabled = await safeInstance.isModuleEnabled(
+    signatureAllowance.address
+  );
+  if (!isEnabled) {
     console.log(`Module not enabled, please manually enable it`);
   } else {
     console.log(`Module enabled at safe`);
@@ -120,7 +152,7 @@ const deploySignatureAllowance: DeployFunction = async (
           // GM token
           await hre.run("verify:verify", {
             address: gmToken,
-            constructorArguments: [safeAddress]
+            constructorArguments: [safeAddress],
           });
         } catch (e) {
           console.log(e);

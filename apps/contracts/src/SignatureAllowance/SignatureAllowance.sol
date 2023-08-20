@@ -350,5 +350,5 @@ contract SignatureAllowance is
 
     function _authorizeUpgrade(
         address newImplementation
-    ) internal virtual onlyOwner override {}
+    ) internal virtual override onlyOwner {}
 }

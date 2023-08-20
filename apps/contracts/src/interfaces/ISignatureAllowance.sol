@@ -59,17 +59,19 @@ interface ISignatureAllowance {
     /// @notice get Safe address
     /// @dev Tokens are withdrawn from this safe
     /// @return _safe safe address
-    function getSafe() view external returns(Safe _safe);
+    function getSafe() external view returns (Safe _safe);
 
     /// @notice get default token to be withdrawn
     /// @dev default token is withdrawn when use calls withdrawAllowanceDefaultToken
     /// @return _defaultToken address of default token
-    function getDefaultToken() view external returns(address _defaultToken) ;
+    function getDefaultToken() external view returns (address _defaultToken);
 
     /// @notice check is a token is allowed to be withdrawn
     /// @param _token address of token to be checked
-    /// @return _isAllowlisted a bool representing if token is allowlisted, true - allowlisted, 
-    function checkTokenAllowlisted(address _token) view external returns(bool _isAllowlisted);
+    /// @return _isAllowlisted a bool representing if token is allowlisted, true - allowlisted,
+    function checkTokenAllowlisted(
+        address _token
+    ) external view returns (bool _isAllowlisted);
 
     /// @notice check if a signature is valid and active
     /// @dev uses Safe.checkSignatures function by generating datahash and ensuring the signature is still active
@@ -85,12 +87,15 @@ interface ISignatureAllowance {
         address _token,
         uint256 _creationTime,
         uint256 _salt
-    ) view external returns(bool _isValid);
+    ) external view returns (bool _isValid);
 
     /// @notice get expiry time period after which a signature becomes inactive
     /// @dev for signature to be active expiryPeriod + creationTime <= block.timestamp
     /// @return _expiryPeriod expiry period (in seconds) after which a signature is inactive. SignatureCreationTime - now() < expiryPeriod
-    function getSignatureExpiryPeriod() view external returns(uint256 _expiryPeriod);
+    function getSignatureExpiryPeriod()
+        external
+        view
+        returns (uint256 _expiryPeriod);
 
     /// @notice set new expiry period (in seconds)
     /// @dev for signature to be active expiryPeriod + creationTime <= block.timestamp
@@ -113,5 +118,5 @@ interface ISignatureAllowance {
         Enum.Operation operation,
         uint256 creationTime,
         uint256 _salt
-    ) view external returns(bytes memory hashData);
+    ) external view returns (bytes memory hashData);
 }

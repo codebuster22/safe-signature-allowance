@@ -15,7 +15,8 @@ library ContractChecker {
     error NotAContract(address invalidContract);
 
     /// @notice constant hash that is for address with no code
-    bytes32 private constant ACCOUNT_HASH = 0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470;
+    bytes32 private constant ACCOUNT_HASH =
+        0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470;
 
     /// @notice check if an address is contract or not
     /// @dev uses EXTCODEHASH, if not a contract, reverts
@@ -28,7 +29,7 @@ library ContractChecker {
             extCodeHash := extcodehash(_addressToCheck)
         }
 
-        if (!(extCodeHash != ACCOUNT_HASH && extCodeHash != 0x0)){
+        if (!(extCodeHash != ACCOUNT_HASH && extCodeHash != 0x0)) {
             revert NotAContract(_addressToCheck);
         }
     }
@@ -98,7 +99,7 @@ abstract contract SafeModule is Initializable {
 
     /// @notice get target safe instance (address)
     /// @return safe target safe instance (address)
-    function _getSafe() internal view returns(Safe safe) {
+    function _getSafe() internal view returns (Safe safe) {
         return _safe;
     }
 }
