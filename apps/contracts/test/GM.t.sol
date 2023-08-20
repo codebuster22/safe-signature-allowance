@@ -7,7 +7,7 @@ import "../src/GM.sol";
 import {SetupSafe, Safe} from "./utils/SetupSafe.s.sol";
 
 contract GMTest is Test {
-    uint256 constant public HUNDRED_MILLION = 100_000_000 ether;
+    uint256 public constant HUNDRED_MILLION = 100_000_000 ether;
     GM public gm;
     Safe public safe;
 

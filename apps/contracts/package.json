@@ -5,8 +5,8 @@
     "access": "public"
   },
   "scripts": {
-    "coverage": "hardhat coverage",
-    "test": "hardhat test"
+    "coverage": "forge coverage",
+    "test": "forge test"
   },
   "version": "0.2.3",
   "devDependencies": {

@@ -16,7 +16,6 @@ contract SignatureAllowanceFailSafe is SignatureAllowanceSetup {
         signatureAllowance.pause();
 
         assertTrue(signatureAllowance.paused());
-
     }
 
     function testSignerDeactivatingFailSafe() public {
@@ -35,7 +34,6 @@ contract SignatureAllowanceFailSafe is SignatureAllowanceSetup {
         signatureAllowance.unpause();
 
         assertFalse(signatureAllowance.paused());
-
     }
 
     function testNonSignerActivatingFailSafe() public {

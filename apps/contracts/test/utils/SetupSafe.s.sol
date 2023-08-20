@@ -56,7 +56,10 @@ contract SetupSafe {
         );
     }
 
-    function getTxHashAndDataForEnableModule(Safe safe, address module) view public returns(bytes32 trxHash, bytes memory data) {
+    function getTxHashAndDataForEnableModule(
+        Safe safe,
+        address module
+    ) public view returns (bytes32 trxHash, bytes memory data) {
         // ensure the module is enabled on safe
 
         // get current safe nonce
