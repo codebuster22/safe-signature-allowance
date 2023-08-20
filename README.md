@@ -3,6 +3,14 @@
 ## Demo
 [See Demo on Loom](https://www.loom.com/share/af9a7b04c3974268bf50c6b5c5db52c8?sid=f6950575-6140-42fc-bfaa-fea2c299a81b)
 
+## Note:
+- Currently, CI is failing because the version foundry being fetched is generating new mappings and overwrites the remappings.
+
+## Future
+- Gas optimizations
+- Subgraph
+- Frontend to test the smart contracts
+
 ## Prerequisites:
 1. [foundry](https://book.getfoundry.sh/getting-started/installation)
 2. [yarn](https://yarnpkg.com/getting-started/install)

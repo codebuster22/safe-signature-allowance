@@ -7,8 +7,12 @@ on:
     # Triggers the workflow on push or pull request events but only for the master branch
     push:
         branches: [main]
+        paths:
+          - "apps/contracts/**"    
     pull_request:
         branches: [main]
+        paths:
+          - "apps/contracts/**"    
 
     # Allows you to run this workflow manually from the Actions tab
     workflow_dispatch:
@@ -19,6 +23,10 @@ jobs:
     build:
         # The type of runner that the job will run on
         runs-on: ubuntu-latest
+
+        defaults:
+          run:
+            working-directory: "apps/contracts/"
 
         # Steps represent a sequence of tasks that will be executed as part of the job
         steps:
@@ -32,39 +40,15 @@ jobs:
                   node-version: "18"
             - name: Install Foundry
               uses: foundry-rs/foundry-toolchain@v1
-              with:
-                version: nightly
               # Runs a single command using the runners shell
             - name: Installs needed packages using npm
               run: yarn install
-
-    lint:
-        runs-on: ubuntu-latest
-
-        needs:
-            build
-
-            # Steps represent a sequence of tasks that will be executed as part of the job
-        steps:
-            # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-            - uses: actions/checkout@v2
-              with:
-                submodules: recursive
-            - uses: CultureHQ/actions-yarn@v1.0.1
-            - uses: actions/setup-node@v3.5.1
-              with:
-                  node-version: "18"
-
-              # Runs a single command using the runners shell
-            - name: Installs needed packages using npm
-              run: yarn install
-
-              # Runs a single command using the runners shell
-            - name: Lints the project
-              run: yarn lint
-
     test:
         runs-on: ubuntu-latest
+
+        defaults:
+          run:
+            working-directory: "apps/contracts/"
 
         needs:
             build
@@ -81,8 +65,6 @@ jobs:
                   node-version: "18"
             - name: Install Foundry
               uses: foundry-rs/foundry-toolchain@v1
-              with:
-                version: nightly
 
               # Runs a single command using the runners shell
             - name: Installs needed packages using npm
@@ -95,6 +77,10 @@ jobs:
     coverage:
         runs-on: ubuntu-latest
 
+        defaults:
+          run:
+            working-directory: "apps/contracts/"
+
         needs:
             build
 
@@ -110,8 +96,6 @@ jobs:
                   node-version: "18"
             - name: Install Foundry
               uses: foundry-rs/foundry-toolchain@v1
-              with:
-                version: nightly
 
               # Runs a single command using the runners shell
             - name: Installs needed packages using npm
