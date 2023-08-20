@@ -6,6 +6,11 @@
 ## Note:
 - Currently, CI is failing because the version foundry being fetched is generating new mappings and overwrites the remappings.
 
+## Deployments:
+### Goerli
+1. [SignatureAllowance: 0xeF4213134C70A4E49ef8534083cA16c516b4c7a2](https://goerli.etherscan.io/address/0xeF4213134C70A4E49ef8534083cA16c516b4c7a2)
+2. [GM (ERC20): 0xc353DdEa168869D545f78921A327Ec8ACA48cE53](https://goerli.etherscan.io/address/0xc353DdEa168869D545f78921A327Ec8ACA48cE53)
+
 ## Future
 - Gas optimizations
 - Subgraph
