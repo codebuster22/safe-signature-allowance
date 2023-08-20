@@ -24,6 +24,8 @@ jobs:
         steps:
             # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
             - uses: actions/checkout@v2
+              with:
+                submodules: recursive
             - uses: CultureHQ/actions-yarn@v1.0.1
             - uses: actions/setup-node@v3.5.1
               with:
@@ -46,6 +48,8 @@ jobs:
         steps:
             # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
             - uses: actions/checkout@v2
+              with:
+                submodules: recursive
             - uses: CultureHQ/actions-yarn@v1.0.1
             - uses: actions/setup-node@v3.5.1
               with:
@@ -69,10 +73,16 @@ jobs:
         steps:
             # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
             - uses: actions/checkout@v2
+              with:
+                submodules: recursive
             - uses: CultureHQ/actions-yarn@v1.0.1
             - uses: actions/setup-node@v3.5.1
               with:
                   node-version: "18"
+            - name: Install Foundry
+              uses: foundry-rs/foundry-toolchain@v1
+              with:
+                version: nightly
 
               # Runs a single command using the runners shell
             - name: Installs needed packages using npm
@@ -92,10 +102,16 @@ jobs:
         steps:
             # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
             - uses: actions/checkout@v2
+              with:
+                submodules: recursive
             - uses: CultureHQ/actions-yarn@v1.0.1
             - uses: actions/setup-node@v3.5.1
               with:
                   node-version: "18"
+            - name: Install Foundry
+              uses: foundry-rs/foundry-toolchain@v1
+              with:
+                version: nightly
 
               # Runs a single command using the runners shell
             - name: Installs needed packages using npm
