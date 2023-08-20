@@ -8,6 +8,7 @@ import {ContractChecker, ModuleManager, SafeModule} from "../../src/SafeModule/S
 import {GM, ERC20} from "../../src/GM.sol";
 import {MockToken} from "../../src/MockToken.sol";
 import {SetupSafe, Safe} from "../utils/SetupSafe.s.sol";
+import {ERC1967Proxy} from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
 
 contract SignatureAllowanceSetup is Test {
     SignatureAllowance public signatureAllowance;
@@ -42,13 +43,23 @@ contract SignatureAllowanceSetup is Test {
         defaultToken = new GM(address(safe));
 
         // deploy SignatureAllowance
-        signatureAllowance = new SignatureAllowance();
 
-        // initialize
-        signatureAllowance.initialize(
+        address signatureAllowanceImplementation = address(
+            new SignatureAllowance()
+        );
+
+        bytes memory initData = abi.encodeWithSelector(
+            SignatureAllowance.initialize.selector,
             safe,
             address(defaultToken),
             expiryPeriod
+        );
+
+        // initialize
+        signatureAllowance = SignatureAllowance(
+            address(
+                new ERC1967Proxy(signatureAllowanceImplementation, initData)
+            )
         );
 
         (bytes32 trxHash, bytes memory data) = safeSetup
@@ -94,7 +105,10 @@ contract SignatureAllowanceSetup is Test {
 
         // add new safe module to Safe
         (bytes32 trxHash, bytes memory data) = safeSetup
-            .getTxHashAndDataForEnableModule(newSafe, address(newSignatureAllowance));
+            .getTxHashAndDataForEnableModule(
+                newSafe,
+                address(newSignatureAllowance)
+            );
 
         // generate signature
         bytes memory signature = signMessageEOA(trxHash, signerPrivateKey);

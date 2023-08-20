@@ -5,6 +5,8 @@ import "./SignatureAllowanceSetup.t.sol";
 
 contract SignatureAllowanceSafeConfigTest is SignatureAllowanceSetup {
     function testUserTryingToSetNewValidContractAsSafe() public {
+        // taking an easier approach in testing by impersonating Safe
+        startHoax(address(safe));
         // deploy new safe
         Safe newSafe = (new SetupSafe()).setUp(signerAccount);
 
@@ -18,7 +20,28 @@ contract SignatureAllowanceSafeConfigTest is SignatureAllowanceSetup {
         assertEq(currentSafeAddress, address(newSafe));
     }
 
+    function testNonSignerTryingToSetNewValidContractAsSafe() public {
+        startHoax(nonSignerAccount);
+        // deploy new safe
+        Safe newSafe = (new SetupSafe()).setUp(signerAccount);
+
+        // update safe
+        // expect revert as the caller is not the owner
+        vm.expectRevert("Ownable: caller is not the owner");
+        signatureAllowance.setNewSafe(newSafe);
+
+        // get current safe address
+        address currentSafeAddress = address(signatureAllowance.getSafe());
+
+        // ensure safe address is newly updated
+        assertNotEq(currentSafeAddress, address(newSafe));
+        // ensure safe address haven't changed
+        assertEq(currentSafeAddress, address(safe));
+    }
+
     function testUserCannotSetNewInvalidContractAsSafe() public {
+        // taking an easier approach in testing by impersonating Safe
+        startHoax(address(safe));
         // use an address that is not contract
         address eoa = address(0x202);
 
