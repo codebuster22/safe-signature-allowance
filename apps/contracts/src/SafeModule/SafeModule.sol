@@ -4,7 +4,7 @@ pragma solidity 0.8.19;
 
 import {ModuleManager} from "@safe-global/safe-contracts/contracts/base/ModuleManager.sol";
 import {Safe, Enum} from "@safe-global/safe-contracts/contracts/Safe.sol";
-import {Initializable} from "@openzeppelin/contracts/proxy/utils/Initializable.sol";
+import {Initializable} from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
 /// @title Contarct Checker (Library)
 /// @author Mihirsinh Parmar <mihirsinh.parmar.it@gmail.com>

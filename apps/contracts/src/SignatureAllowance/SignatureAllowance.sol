@@ -5,6 +5,9 @@ import {SafeModule, Enum, Initializable, Safe} from "../SafeModule/SafeModule.so
 import {SignatureAllowanceStorage} from "./SignatureAllowanceStorage.sol";
 import {ISignatureAllowance} from "../interfaces/ISignatureAllowance.sol";
 import {ERC20Upgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
+import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import {PausableUpgradeable} from "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
+import {UUPSUpgradeable} from "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
 /// @title Signature Allowance
 /// @author Mihirsinh Parmar <mihirsinh.parmar.it@gmail.com>
@@ -12,8 +15,11 @@ import {ERC20Upgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC20/
 /// @dev to be deployed as UUPS proxy
 contract SignatureAllowance is
     SafeModule,
-    SignatureAllowanceStorage,
-    ISignatureAllowance
+    OwnableUpgradeable,
+    PausableUpgradeable,
+    UUPSUpgradeable,
+    ISignatureAllowance,
+    SignatureAllowanceStorage
 {
     /// When a user tries to withdraw tokens using same salt again
     /// prevents replay attack
@@ -70,9 +76,20 @@ contract SignatureAllowance is
         // initialize safe module
         __SafeModule_init(_safe);
 
+        // initialize ownable
+        __Ownable_init();
+        // transfer ownership to safe
+        _transferOwnership(address(_safe));
+
+        // initialize pausable
+        __Pausable_init();
+
+        // initialize UUPS
+        __UUPSUpgradeable_init();
+
         // add token to allowlist and set as default token
         _setNewDefaultToken(_defaultToken);
-        
+
         // set expiry period
         expiryPeriod = _expiryPeriod;
 
@@ -88,8 +105,15 @@ contract SignatureAllowance is
         bytes calldata _signatures,
         uint256 _creationTime,
         uint256 _salt
-    ) external {
-        withdrawAllowanceFromToken(_amount, _withdrawer, _signatures, defaultToken, _creationTime, _salt);
+    ) external whenNotPaused {
+        withdrawAllowanceFromToken(
+            _amount,
+            _withdrawer,
+            _signatures,
+            defaultToken,
+            _creationTime,
+            _salt
+        );
     }
 
     /// @inheritdoc	ISignatureAllowance
@@ -100,14 +124,21 @@ contract SignatureAllowance is
         address _token,
         uint256 _creationTime,
         uint256 _salt
-    ) public {
+    ) public whenNotPaused {
         // ensure the salt is not used earlier
         // prevent replay attack
-        if(saltUsed[_salt]) {
+        if (saltUsed[_salt]) {
             revert SaltAlreadyUsed(_salt);
         }
         // check if the signature(s) is valid and active
-        isSignatureValid(_amount, _withdrawer, _signatures, _token, _creationTime, _salt);
+        isSignatureValid(
+            _amount,
+            _withdrawer,
+            _signatures,
+            _token,
+            _creationTime,
+            _salt
+        );
 
         // mark salt used
         saltUsed[_salt] = true;
@@ -125,7 +156,7 @@ contract SignatureAllowance is
     }
 
     /// @inheritdoc	ISignatureAllowance
-    function addTokenToAllowlist(address _newToken) external {
+    function addTokenToAllowlist(address _newToken) external onlyOwner {
         // if token is allowlisted, revert
         if (tokensAllowed[_newToken]) {
             revert TokenAlreadyInAllowlist();
@@ -135,7 +166,7 @@ contract SignatureAllowance is
     }
 
     /// @inheritdoc	ISignatureAllowance
-    function removeTokenFromAllowlist(address _token) external {
+    function removeTokenFromAllowlist(address _token) external onlyOwner {
         // if token is not allowlisted, revert
         if (!tokensAllowed[_token]) {
             revert TokenNotInAllowlist();
@@ -145,12 +176,12 @@ contract SignatureAllowance is
     }
 
     /// @inheritdoc	ISignatureAllowance
-    function setNewSafe(Safe _newSafe) external {
+    function setNewSafe(Safe _newSafe) external onlyOwner {
         _setNewSafe(_newSafe);
     }
 
     /// @inheritdoc	ISignatureAllowance
-    function setNewDefaultToken(address _newDefaultToken) external {
+    function setNewDefaultToken(address _newDefaultToken) external onlyOwner {
         _setNewDefaultToken(_newDefaultToken);
     }
 
@@ -233,7 +264,9 @@ contract SignatureAllowance is
     }
 
     /// @inheritdoc	ISignatureAllowance
-    function setSignatureExpiryPeriod(uint256 _newExpiryPeriod) external {
+    function setSignatureExpiryPeriod(
+        uint256 _newExpiryPeriod
+    ) external onlyOwner {
         expiryPeriod = _newExpiryPeriod;
         emit ExpiryPeriodUpdated(_newExpiryPeriod);
     }
@@ -246,7 +279,7 @@ contract SignatureAllowance is
         Enum.Operation operation,
         uint256 creationTime,
         uint256 _salt
-    ) view public returns(bytes memory hashData) {
+    ) public view returns (bytes memory hashData) {
         // get safe instance
         Safe safe = _getSafe();
 
@@ -306,4 +339,16 @@ contract SignatureAllowance is
         // if checkSignatures didn't revert that means, signature is valid
         return true;
     }
+
+    function pause() external whenNotPaused onlyOwner {
+        _pause();
+    }
+
+    function unpause() external whenPaused onlyOwner {
+        _unpause();
+    }
+
+    function _authorizeUpgrade(
+        address newImplementation
+    ) internal virtual onlyOwner override {}
 }
